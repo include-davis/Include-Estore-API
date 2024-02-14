@@ -1,0 +1,38 @@
+{
+  "name": "apollo-starter",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint src/",
+    "schema:gen": "run-script-os",
+    "schema:gen:nix": "bash ./scripts/schema_gen/schema_gen.sh",
+    "schema:gen:windows": ".\\scripts\\schema_gen\\schema_gen.bat",
+    "db:migrate": "npx prisma migrate dev",
+    "db:view": "npx prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "@prisma/client": "^5.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "3.0.3",
+    "prisma": "^5.6.0",
+    "run-script-os": "^1.1.6"
+  }
+}
