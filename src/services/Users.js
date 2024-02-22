@@ -22,6 +22,9 @@ export default class Users {
   }
 
   static async findMany({ ids }) {
+    if (!ids) {
+      return prisma.user.findMany();
+    }
     return prisma.user.findMany({
       where: {
         id: {
