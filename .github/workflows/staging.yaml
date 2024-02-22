@@ -13,6 +13,9 @@ jobs:
       name: staging
       url: ${{ vars.ENV_URL }}
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,11 +34,18 @@ jobs:
       - name: Lint check
         run: npm run lint
 
+      - name: Sync Prisma to Env
+        run: npx prisma generate
+
+      - name: Run Migrations
+        run: npm run db:migrate
+
       - name: Deploy image to Railway
-        run: railway up --environment staging --service "apollo server"
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          MONGO_CONNECTION_STRING: ${{ secrets.MONGO_CONNECTION_STRING }}
+        run: >
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
+          railway up 
+          --service "apollo" 
+          -d
 
       - name: Success
         run: echo "🛠️ Deploy successful 🛠️"

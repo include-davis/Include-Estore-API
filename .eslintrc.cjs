@@ -8,19 +8,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["prettier"],
   rules: {
-    "prettier/prettier": [
-      "error",
-      {
-        bracketSpacing: true,
-        tabWidth: 2,
-        printWidth: 80,
-        useTabs: false,
-        endOfLine: "auto",
-        semi: true,
-      },
-    ],
     semi: ["error", "always"],
     quotes: ["error", "double"],
     "no-console": "off",
