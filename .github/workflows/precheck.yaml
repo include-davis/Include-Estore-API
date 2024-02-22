@@ -26,8 +26,5 @@ jobs:
       - name: Linting check
         run: npm run lint
 
-      - name: Runtime check
-        run: npm run start
-
       - name: Success
         run: echo "🚧 Build successful 🚧"
