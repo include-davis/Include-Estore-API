@@ -26,5 +26,8 @@ jobs:
       - name: Linting check
         run: npm run lint
 
+      - name: Schema check
+        run: npm run schema:gen
+
       - name: Success
         run: echo "🚧 Build successful 🚧"
