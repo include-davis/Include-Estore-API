@@ -37,6 +37,9 @@ jobs:
       - name: Sync Prisma to Env
         run: npx prisma generate
 
+      - name: Schema check and generation
+        run: npm run schema:gen
+
       - name: Run Migrations
         run: npm run db:migrate
 
