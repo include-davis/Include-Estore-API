@@ -58,18 +58,18 @@ export type Context = {
 /**
  * Creates a JWT token with the provided data.
  * @param data - The data to be encoded into the token.
- * @param durationOfToken - Optional. The duration for which the token will be valid (default is "1h").
+ * @param durationOfToken - Optional. Duration for which the token will be valid (default is "1h").
  * @returns The response indicating the success or failure of token creation.
  */
 export function createToken(data: any, durationOfToken: string = "1h"): CreateTokenResponse {
   const token = jwt.sign(data, secretKey, {
-    expiresIn: durationOfToken
+    expiresIn: durationOfToken,
   });
 
   return {
     ok: true,
     body: token,
-    error: undefined
+    error: undefined,
   };
 }
 
@@ -84,13 +84,13 @@ export function verifyToken(token: Token): VerifyTokenResponse {
     return {
       ok: true,
       body: decodedToken,
-      error: undefined
+      error: undefined,
     };
   } catch (e) {
     return {
       ok: false,
       body: undefined,
-      error: e
+      error: e,
     };
   }
 }
@@ -109,9 +109,9 @@ export const authTokenRouter = express.Router();
  */
 authTokenRouter.use((req, res, next) => {
   try {
-    const token = req.cookies.token; // Retrieve token from cookies
+    const { token } = req.cookies; // Retrieve token from cookies
     const context: Context = {
-      auth: verifyToken(token) // Verify token and create authentication context
+      auth: verifyToken(token), // Verify token and create authentication context
     };
     res.send(context); // Send authentication context in the response
     next();
@@ -120,8 +120,8 @@ authTokenRouter.use((req, res, next) => {
       auth: {
         ok: false,
         body: undefined,
-        error: e
-      } as VerifyTokenResponse
+        error: e,
+      } as VerifyTokenResponse,
     };
     res.send(context); // Send error authentication context in case of exceptions
     next();
