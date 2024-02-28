@@ -1,9 +1,9 @@
-import Playlists from "../services/Playlists.js";
-import Users from "../services/Users.js";
+import Playlists from "../services/Playlists";
+import Users from "../services/Users";
 
 const resolvers = {
   Playlist: {
-    user: ({ userId }) => Users.getUser({ id: userId }),
+    user: ({ userId }) => Users.find({ id: userId }),
     songs: ({ id }) => Playlists.getSongs({ id }),
   },
   Query: {

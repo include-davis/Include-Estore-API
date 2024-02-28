@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "lint": "eslint src/",
+    "start": "tsc && node --experimental-loader tsc-module-loader dist/index.js",
+    "dev": "tsc --watch & nodemon --exec node --experimental-loader tsc-module-loader dist/index.js",
+    "lint": "tsc && eslint src/**/*",
     "schema:gen": "run-script-os",
     "schema:gen:nix": "bash ./scripts/schema_gen/schema_gen.sh",
     "schema:gen:windows": ".\\scripts\\schema_gen\\schema_gen.bat",
@@ -23,16 +23,22 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "graphql": "^16.8.1",
-    "graphql-tag": "^2.12.6",
-    "nodemon": "^3.0.1"
+    "graphql-tag": "^2.12.6"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.11.21",
+    "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.54.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "nodemon": "^3.1.0",
     "prettier": "3.0.3",
     "prisma": "^5.6.0",
-    "run-script-os": "^1.1.6"
+    "run-script-os": "^1.1.6",
+    "ts-node": "^10.9.2",
+    "tsc-module-loader": "^0.0.1",
+    "typescript": "^5.3.3"
   }
 }
