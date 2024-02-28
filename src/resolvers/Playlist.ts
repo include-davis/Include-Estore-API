@@ -1,5 +1,5 @@
-import Playlists from "../services/Playlists.ts";
-import Users from "../services/Users.ts";
+import Playlists from "../services/Playlists";
+import Users from "../services/Users";
 
 const resolvers = {
   Playlist: {

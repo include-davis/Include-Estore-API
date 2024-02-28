@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "compile": "tsc",
+    "start": "npm run compile && node dist/index.js",
+    "dev": "concurrently \"nodemon dist/index.js\" \"node ./node_modules/.bin/concurrently tsc --watch\"",
     "lint": "eslint src/",
     "schema:gen": "run-script-os",
     "schema:gen:nix": "bash ./scripts/schema_gen/schema_gen.sh",
@@ -27,12 +28,16 @@
     "nodemon": "^3.0.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.11.21",
+    "concurrently": "^8.2.2",
     "eslint": "^8.54.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "3.0.3",
     "prisma": "^5.6.0",
-    "run-script-os": "^1.1.6"
+    "run-script-os": "^1.1.6",
+    "typescript": "^5.3.3"
   }
 }

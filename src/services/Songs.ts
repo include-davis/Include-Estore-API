@@ -1,4 +1,4 @@
-import prisma from "../prisma/client.ts";
+import prisma from "../prisma/client";
 
 export default class Songs {
   // CREATE
