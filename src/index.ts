@@ -6,11 +6,11 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import prisma from "./prisma/client";
+import prisma from "./prisma/client.js";
 
 // Type definitions
-import typeDefs from "./typeDefs/index";
-import resolvers from "./resolvers/index";
+import typeDefs from "./typeDefs/index.js";
+import resolvers from "./resolvers/index.js";
 
 // Define Prisma Client type
 type Context = {

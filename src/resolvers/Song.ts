@@ -1,4 +1,4 @@
-import Songs from "../services/Songs";
+import Songs from "../services/Songs.js";
 
 const resolvers = {
   Song: {
