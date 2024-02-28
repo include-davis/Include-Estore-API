@@ -1,5 +1,5 @@
-import Playlists from "../services/Playlists.js";
-import Users from "../services/Users.js";
+import Playlists from "../services/Playlists";
+import Users from "../services/Users";
 
 const resolvers = {
   Playlist: {

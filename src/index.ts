@@ -6,11 +6,11 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import prisma from "./prisma/client.js";
+import prisma from "./prisma/client";
 
 // Type definitions
-import typeDefs from "./typeDefs/index.js";
-import resolvers from "./resolvers/index.js";
+import typeDefs from "./typeDefs/index";
+import resolvers from "./resolvers/index";
 
 // Define Prisma Client type
 type Context = {
@@ -22,9 +22,6 @@ type Context = {
 async function startServer() {
   const app = express();
   const httpServer = http.createServer(app);
-
-  // Context definition
-  const context: Context = { prisma };
 
   // Create Apollo Server instance
   const server = new ApolloServer({
