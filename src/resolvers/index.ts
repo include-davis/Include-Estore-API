@@ -2,6 +2,6 @@
 // import Playlist from "./Playlist";
 // import Song from "./Song";
 
-import Authentication from "../services/Authentications";
+import Authentication from "./Authentication";
 
 export default [Authentication];

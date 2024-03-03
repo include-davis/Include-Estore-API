@@ -35,6 +35,7 @@ export default class Authentication {
       if (isPasswordValid === false) {
         throw new Error("email or password does not match");
       }
+      // use code from authToken middleware in the future (below is placeholder)
       const token = jwt.sign(emailObject, process.env.JWT_SECRET, {
         expiresIn: `${authExpiration}h`,
       });
@@ -54,14 +55,24 @@ export default class Authentication {
   // Try registering, check for pre-existing user email
   static async register({ email, password }) {
     try {
-      const isEmailExist = await this.findEmail(email);
-      if (isEmailExist !== null) {
+      const salt = bcrypt.genSaltSync(5);
+      const passwordHash = bcrypt.hashSync(password, salt);
+      const emailObject = await this.findEmail(email);
+      if (emailObject !== null) {
         // Put email and hashed password into db
+        const newUser = {
+          email,
+          password: passwordHash,
+        };
+
+        const createNewUser = await prisma.authentication.create({ data: newUser });
+        if (createNewUser !== null) {
+          return true;
+        }
       }
+      return false;
     } catch (e) {
       return false;
     }
   }
-
-  // UPDATE
 }
