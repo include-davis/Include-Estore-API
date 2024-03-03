@@ -1,13 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { cookies } from "next/headers";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { NextResponse } from "next/server";
 import prisma from "../prisma/client";
 
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-const authExpiration = 3;
 
 export default class Authentication {
   // READ
@@ -36,16 +29,17 @@ export default class Authentication {
         throw new Error("email or password does not match");
       }
       // use code from authToken middleware in the future (below is placeholder)
-      const token = jwt.sign(emailObject, process.env.JWT_SECRET, {
-        expiresIn: `${authExpiration}h`,
-      });
-      cookies().set({
-        name: "auth_token",
-        value: token,
-        expires: Date.now() + 100 * 360 * authExpiration,
-        secure: true,
-      });
-      return NextResponse.json({ ok: true, emailObject }, { status: 200 });
+      // const token = jwt.sign(emailObject, process.env.JWT_SECRET, {
+      //   expiresIn: `${authExpiration}h`,
+      // });
+      // cookies().set({
+      //   name: "auth_token",
+      //   value: token,
+      //   expires: Date.now() + 100 * 360 * authExpiration,
+      //   secure: true,
+      // });
+      // return NextResponse.json({ ok: true, emailObject }, { status: 200 });
+      return true;
     } catch (e) {
       return false;
     }
