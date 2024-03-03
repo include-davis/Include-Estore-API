@@ -28,6 +28,9 @@ export default class Authentication {
       if (isPasswordValid === false) {
         throw new Error("email or password does not match");
       }
+      if (emailObject === null) {
+        throw new Error("user does not exist");
+      }
       // use code from authToken middleware in the future (below is placeholder)
       // const token = jwt.sign(emailObject, process.env.JWT_SECRET, {
       //   expiresIn: `${authExpiration}h`,
@@ -61,6 +64,7 @@ export default class Authentication {
 
         const createNewUser = await prisma.authentication.create({ data: newUser });
         if (createNewUser !== null) {
+          // use authToken middleware here in the future
           return true;
         }
       }
