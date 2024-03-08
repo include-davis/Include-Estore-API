@@ -3,7 +3,6 @@ import prisma from "../prisma/client";
 export default class Product {
     // CREATE
     static async create({ input }) {
-        console.log(input);
         const product = await prisma.product.create({
             data: input,
         });
