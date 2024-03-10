@@ -3,10 +3,24 @@ import prisma from "../prisma/client";
 export default class Users {
   // CREATE
   static async create({ input }) {
-    const { name } = input;
+    const {
+      name,
+      email,
+      password,
+      address,
+      city,
+      country,
+      zipCode,
+    } = input;
     const user = await prisma.user.create({
       data: {
         name,
+        email,
+        password,
+        address,
+        city,
+        country,
+        zipCode,
       },
     });
     return user;
@@ -34,7 +48,7 @@ export default class Users {
     });
   }
 
-  // UDPATE
+  // UPDATE
   static async update({ id, input }) {
     try {
       const user = await prisma.user.update({
@@ -63,7 +77,7 @@ export default class Users {
     }
   }
 
-  // OTHER
+  // OTHER //this would become getOrders later
   static async getPlaylists({ id }) {
     return prisma.playlist.findMany({
       where: {
