@@ -1,5 +1,4 @@
-import User from "./User.js";
-import Playlist from "./Playlist.js";
-import Song from "./Song.js";
+import Product from "./Product.js";
+import Inventory from "./Inventory.js";
 
-export default [User, Playlist, Song];
+export default [Product, Inventory];
