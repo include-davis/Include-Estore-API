@@ -1,6 +1,6 @@
 import User from "./User";
 import Playlist from "./Playlist";
 import Song from "./Song";
-import Product from "./Product";
+import Products from "./Products";
 
-export default [User, Playlist, Product, Song];
+export default [User, Playlist, Products, Song];
