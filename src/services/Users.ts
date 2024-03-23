@@ -78,11 +78,4 @@ export default class Users {
   }
 
   // OTHER //this would become getOrders later
-  static async getPlaylists({ id }) {
-    return prisma.playlist.findMany({
-      where: {
-        userId: id,
-      },
-    });
-  }
 }
