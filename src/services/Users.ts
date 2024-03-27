@@ -50,12 +50,29 @@ export default class Users {
 
   // UPDATE
   static async update({ id, input }) {
+    const {
+      name,
+      email,
+      password,
+      address,
+      city,
+      country,
+      zipCode,
+    } = input;
     try {
       const user = await prisma.user.update({
         where: {
           id,
         },
-        data: input,
+        data: {
+          name,
+          email,
+          password,
+          address,
+          city,
+          country,
+          zipCode,
+        },
       });
       return user;
     } catch (e) {
