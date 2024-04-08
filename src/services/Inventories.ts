@@ -19,7 +19,7 @@ export default class Inventories {
           connect: { id },
         },
         available_quantity: availableQuantity || 0,
-        cost_of_production: costOfProduction || 0,
+        cost_of_production: costOfProduction || 0.00,
         lead_time: leadTime || 0,
         reorder_point: reorderPoint || 0,
         reorder_quantity: reorderQuantity || 0,
@@ -41,30 +41,17 @@ export default class Inventories {
 
   // UPDATE
   static async update({ id, input }) {
-    const {
-      availableQuantity,
-      costOfProduction,
-      leadTime,
-      reorderPoint,
-      reorderQuantity,
-      safetyStock,
-      stockOnOrder,
-    } = input;
-    const inventory = await prisma.inventory.update({
-      where: {
-        id,
-      },
-      data: {
-        available_quantity: availableQuantity,
-        cost_of_production: costOfProduction,
-        lead_time: leadTime,
-        reorder_point: reorderPoint,
-        reorder_quantity: reorderQuantity,
-        safety_stock: safetyStock,
-        stock_on_order: stockOnOrder,
-      },
-    });
-    return inventory;
+    try {
+      const inventory = await prisma.inventory.update({
+        where: {
+          id,
+        },
+        data: input,
+      });
+      return inventory;
+    } catch (e) {
+      return null;
+    }
   }
 
   // DELETE

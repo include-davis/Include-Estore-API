@@ -5,7 +5,7 @@ const typeDefs = gql`
     id: ID!
     inventory: Inventory!
     name: String!
-    price: Int!
+    price: Float!
     description: String!
     details: String!
     weight: Int!
@@ -17,7 +17,7 @@ const typeDefs = gql`
 
   input ProductInput {
     name: String!
-    price: Int!
+    price: Float!
     description: String
     details: String
     weight: Int
@@ -29,7 +29,7 @@ const typeDefs = gql`
 
   input UpdateProductInput {
     name: String
-    price: Int
+    price: Float
     description: String
     details: String
     weight: Int
@@ -46,7 +46,7 @@ const typeDefs = gql`
 
   type Mutation {
     createProduct(input: ProductInput!): Product
-    updateProduct(id: ID!, input: ProductInput!): Product
+    updateProduct(id: ID!, input: UpdateProductInput!): Product
     deleteProduct(id: ID!): Boolean
   }
 `;

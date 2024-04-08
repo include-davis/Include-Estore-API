@@ -20,7 +20,7 @@ export default class Products {
         inventory: {
           create: {
             available_quantity: 0,
-            cost_of_production: 0,
+            cost_of_production: 0.00,
             lead_time: 0,
             reorder_point: 0,
             reorder_quantity: 0,
@@ -46,38 +46,32 @@ export default class Products {
     return prisma.product.findUnique({ where: { id } });
   }
 
-  static async findAll() {
-    return prisma.product.findMany();
+  static async findAll({ ids }) {
+    if (!ids) {
+      return prisma.product.findMany();
+    }
+    return prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
   }
 
   // UPDATE
   static async update({ id, input }) {
-    const {
-      name,
-      price,
-      description,
-      details,
-      weight,
-      height,
-      width,
-      depth,
-    } = input;
-    const product = await prisma.product.update({
-      where: {
-        id,
-      },
-      data: {
-        name,
-        price,
-        description,
-        details,
-        weight,
-        height,
-        width,
-        depth,
-      },
-    });
-    return product;
+    try {
+      const product = await prisma.product.update({
+        where: {
+          id,
+        },
+        data: input,
+      });
+      return product;
+    } catch (e) {
+      return null;
+    }
   }
 
   // DELETE

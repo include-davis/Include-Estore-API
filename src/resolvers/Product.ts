@@ -7,7 +7,7 @@ const resolvers = {
   },
   Query: {
     product: (_, { id }) => Products.find({ id }),
-    products: () => Products.findAll(),
+    products: (_, { ids }) => Products.findAll({ ids }),
   },
   Mutation: {
     createProduct: (_, { input }) => Products.create({ input }),
