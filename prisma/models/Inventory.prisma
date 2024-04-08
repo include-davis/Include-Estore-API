@@ -1,6 +1,6 @@
 model Inventory {
-  id                      String
-  product                 Product @relation(fields: [id], references: [id], onDelete: Cascade)
+  id                      String  @id @unique
+  product                 Product @relation("product_inventory", fields: [id], references: [id], onDelete: Cascade)
   available_quantity      Int
   cost_of_production      Float
   lead_time               Int

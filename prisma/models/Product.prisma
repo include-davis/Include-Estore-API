@@ -1,5 +1,6 @@
 model Products {
   id                   String  @id @default(uuid())
+  inventory            Inventory? @relation("product_inventory")
   name                 String
   price                Float
   description          String
