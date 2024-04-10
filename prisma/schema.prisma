@@ -11,3 +11,17 @@ model Authentication {
   id       String @id @default(uuid())
   email    String
   password String
+}
+
+model Products {
+  id                   String  @id @default(uuid())
+  name                 String
+  price                Int
+  description          String
+  details              String
+  weight               Int
+  height               Int
+  width                Int
+  depth                Int
+  special_label_needed Boolean
+}
