@@ -2,10 +2,10 @@ import prisma from "../prisma/client";
 
 const bcrypt = require("bcryptjs");
 
-/**
-* Retrieve email from database
-*/
 export default class Authentication {
+  /**
+  * Retrieve email from database
+  */
   static async findEmail({ email }) {
     try {
       return prisma.authentication.findFirstOrThrow({
