@@ -11,4 +11,3 @@ model Authentication {
   id       String @id @default(uuid())
   email    String
   password String
-}

@@ -27,9 +27,11 @@
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "next": "^14.1.0"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.11.21",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.54.0",
