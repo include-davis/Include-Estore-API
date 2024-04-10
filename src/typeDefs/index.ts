@@ -1,6 +1,4 @@
-import User from "./User.js";
-import Playlist from "./Playlist.js";
-import Song from "./Song.js";
+import Authentication from "./Authentication.js";
 import Products from "./Products.js";
 
-export default [User, Playlist, Song, Products];
+export default [Authentication, Products];

@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Authentication {
+  id       String @id @default(uuid())
+  email    String
+  password String
+}
+
 model Playlist {
   id        String           @id @default(uuid())
   name      String

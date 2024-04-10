@@ -1,6 +1,4 @@
-import User from "./User";
-import Playlist from "./Playlist";
-import Song from "./Song";
+import Authentication from "./Authentication";
 import Products from "./Products";
 
-export default [User, Playlist, Products, Song];
+export default [Authentication, Products];
