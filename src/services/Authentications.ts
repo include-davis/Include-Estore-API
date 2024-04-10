@@ -2,8 +2,10 @@ import prisma from "../prisma/client";
 
 const bcrypt = require("bcryptjs");
 
+/**
+* Retrieve email from database
+*/
 export default class Authentication {
-  // READ
   static async findEmail({ email }) {
     try {
       return prisma.authentication.findFirstOrThrow({
@@ -12,11 +14,13 @@ export default class Authentication {
         },
       });
     } catch (e) {
-      throw new Error("something went wrong");
+      throw new Error("unable to find email");
     }
   }
 
-  // Try logging in, check for nonexistent user email or incorrect password
+  /**
+  * Try logging in, check for nonexistent user email or incorrect password
+  */
   static async login({ email, password }) {
     try {
       // Retrieve object from database with the email
@@ -48,8 +52,9 @@ export default class Authentication {
     }
   }
 
-  // CREATE
-  // Try registering, check for pre-existing user email
+  /**
+  * Create a user with this method, check for pre-existing user email
+  */
   static async register({ email, password }) {
     try {
       const salt = bcrypt.genSaltSync(5);
