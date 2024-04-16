@@ -3,25 +3,8 @@ import prisma from "../prisma/client";
 export default class Users {
   // CREATE
   static async create({ input }) {
-    const {
-      name,
-      email,
-      password,
-      address,
-      city,
-      country,
-      zipCode,
-    } = input;
     const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password,
-        address,
-        city,
-        country,
-        zipCode,
-      },
+      data: input,
     });
     return user;
   }
@@ -50,29 +33,12 @@ export default class Users {
 
   // UPDATE
   static async update({ id, input }) {
-    const {
-      name,
-      email,
-      password,
-      address,
-      city,
-      country,
-      zipCode,
-    } = input;
     try {
       const user = await prisma.user.update({
         where: {
           id,
         },
-        data: {
-          name,
-          email,
-          password,
-          address,
-          city,
-          country,
-          zipCode,
-        },
+        data: input,
       });
       return user;
     } catch (e) {
@@ -93,6 +59,4 @@ export default class Users {
       return false;
     }
   }
-
-  // OTHER //this would become getOrders later
 }
