@@ -13,10 +13,10 @@ const setCookieRouter = express.Router();
  *
  * @param token represents the JWT to be stored in the cookie
  */
-function setCookie(token: any) {
+function setCookie(data:any) {
   const expiration = Date.now() + 100 * 360 * 1;
   setCookieRouter.use((req, res) => {
-    res.cookie("auth_token", token, {
+    res.cookie("auth_token", createToken(data), {
       expires: new Date(expiration),
       path: "/",
       secure: true,
@@ -58,8 +58,7 @@ export default class Authentication {
       if (emailObject === null) {
         throw new Error("user does not exist");
       }
-      const token = createToken(emailObject);
-      setCookie(token);
+      setCookie(emailObject);
       return true;
     } catch (e) {
       return false;
@@ -84,8 +83,7 @@ export default class Authentication {
         const createNewUser = await prisma.authentication.create({ data: newUser });
         if (createNewUser !== null) {
           // use authToken middleware here in the future
-          const token = createToken(emailObject);
-          setCookie(token);
+          setCookie(emailObject);
           return true;
         }
       }
