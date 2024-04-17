@@ -1,7 +1,30 @@
+/**
+ * Handles Login/Register mutations
+ */
+import express from "express";
 import prisma from "../prisma/client";
+import { createToken } from "../util/authToken";
 
 const bcrypt = require("bcryptjs");
 
+const setCookieRouter = express.Router();
+
+/**
+ *
+ * @param token represents the JWT to be stored in the cookie
+ */
+function setCookie(token: any) {
+  const expiration = Date.now() + 100 * 360 * 1;
+  setCookieRouter.use((req, res) => {
+    res.cookie("auth_token", token, {
+      expires: new Date(expiration),
+      path: "/",
+      secure: true,
+      httpOnly: true,
+    });
+    res.send("auth_token has been set.");
+  });
+}
 export default class Authentication {
   /**
   * Retrieve email from database
@@ -35,17 +58,8 @@ export default class Authentication {
       if (emailObject === null) {
         throw new Error("user does not exist");
       }
-      // use code from authToken middleware in the future (below is placeholder)
-      // const token = jwt.sign(emailObject, process.env.JWT_SECRET, {
-      //   expiresIn: `${authExpiration}h`,
-      // });
-      // cookies().set({
-      //   name: "auth_token",
-      //   value: token,
-      //   expires: Date.now() + 100 * 360 * authExpiration,
-      //   secure: true,
-      // });
-      // return NextResponse.json({ ok: true, emailObject }, { status: 200 });
+      const token = createToken(emailObject);
+      setCookie(token);
       return true;
     } catch (e) {
       return false;
@@ -70,6 +84,8 @@ export default class Authentication {
         const createNewUser = await prisma.authentication.create({ data: newUser });
         if (createNewUser !== null) {
           // use authToken middleware here in the future
+          const token = createToken(emailObject);
+          setCookie(token);
           return true;
         }
       }
