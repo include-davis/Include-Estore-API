@@ -1,5 +1,6 @@
 // Imports
 import { ApolloServer } from "@apollo/server";
+// import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import express from "express";
@@ -28,6 +29,23 @@ async function startServer() {
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    // format custom error here
+    // eslint-disable-next-line no-unused-vars
+    formatError: (formattedError, error) => {
+      // Return a different error message
+      if (
+        formattedError.extensions.code
+        === "NOT_FOUND"
+      ) {
+        return {
+          ...formattedError,
+          message: "User not found!",
+        };
+      }
+      // Otherwise return the formatted error. This error can also
+      // be manipulated in other ways, as long as it's returned.
+      return formattedError;
+    },
   });
 
   // Server startup and middleware setup

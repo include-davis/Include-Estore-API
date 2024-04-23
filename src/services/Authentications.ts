@@ -2,6 +2,7 @@
  * Handles Login/Register mutations
  */
 import express from "express";
+import { GraphQLError } from "graphql";
 import prisma from "../prisma/client";
 import { createToken } from "../util/authToken";
 
@@ -29,6 +30,7 @@ export default class Authentication {
   /**
   * Retrieve email from database
   */
+  // put findEmail in User class (doesn't exist yet)
   static async findEmail({ email }) {
     try {
       return prisma.authentication.findFirstOrThrow({
@@ -37,7 +39,11 @@ export default class Authentication {
         },
       });
     } catch (e) {
-      throw new Error("unable to find email");
+      throw new GraphQLError("Unable to find email.", {
+        extensions: {
+          code: "NOT_FOUND",
+        },
+      });
     }
   }
 
@@ -47,21 +53,28 @@ export default class Authentication {
   static async login({ email, password }) {
     try {
       // Retrieve object from database with the email
-      const emailObject = this.findEmail(email);
+      const user = this.findEmail(email);
       const isPasswordValid = await bcrypt.compare(
         password as string,
-        (await emailObject).password,
+        (await user).password,
       );
       if (isPasswordValid === false) {
         throw new Error("email or password does not match");
       }
-      if (emailObject === null) {
+      if (user === null) {
         throw new Error("user does not exist");
       }
-      setCookie(emailObject);
-      return true;
+      setCookie(user);
+      return user; // remember to set return type of gql query to User when that exists
     } catch (e) {
-      return false;
+      /**
+       * for error handling, try sending back a graphql error
+      (or just some way that the err shows up on front end) instead of returning false */
+      throw new GraphQLError("Cannot login.", {
+        extensions: {
+          code: "NOT_FOUND",
+        },
+      });
     }
   }
 
@@ -72,8 +85,8 @@ export default class Authentication {
     try {
       const salt = bcrypt.genSaltSync(5);
       const passwordHash = bcrypt.hashSync(password, salt);
-      const emailObject = await this.findEmail(email);
-      if (emailObject !== null) {
+      const user = await this.findEmail(email);
+      if (user !== null) {
         // Put email and hashed password into db
         const newUser = {
           email,
@@ -82,14 +95,17 @@ export default class Authentication {
 
         const createNewUser = await prisma.authentication.create({ data: newUser });
         if (createNewUser !== null) {
-          // use authToken middleware here in the future
-          setCookie(emailObject);
+          setCookie(user);
           return true;
         }
       }
-      return false;
+      return user;
     } catch (e) {
-      return false;
+      throw new GraphQLError("Cannot login.", {
+        extensions: {
+          code: "NOT_FOUND",
+        },
+      });
     }
   }
 }
