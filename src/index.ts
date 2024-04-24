@@ -32,7 +32,7 @@ async function startServer() {
     // format custom error here
     // eslint-disable-next-line no-unused-vars
     formatError: (formattedError, error) => {
-      // Return a different error message
+      // Return a different error message for failing login
       if (
         formattedError.extensions.code
         === "NOT_FOUND"

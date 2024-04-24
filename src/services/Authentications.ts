@@ -1,15 +1,17 @@
 /**
  * Handles Login/Register mutations
  */
-import express from "express";
+// import express from "express";
 import { GraphQLError } from "graphql";
 import prisma from "../prisma/client";
-import { createToken } from "../util/authToken";
+import { authTokenRouter, createToken } from "../util/authToken";
 
 const bcrypt = require("bcryptjs");
-
-const setCookieRouter = express.Router();
-
+/**
+ * use authTokenRouter for setting cookie for now*
+ * (*change this such that the router is put into Context in authToken.ts)
+ */
+const setCookieRouter = authTokenRouter;
 /**
  *
  * @param token represents the JWT to be stored in the cookie
@@ -83,8 +85,8 @@ export default class Authentication {
   */
   static async register({ email, password }) {
     try {
-      const salt = bcrypt.genSaltSync(5);
-      const passwordHash = bcrypt.hashSync(password, salt);
+      // Password stored as a hash, with editable salt from ENV file
+      const passwordHash = bcrypt.hashSync(password, process.env.EDITABLE_SALT);
       const user = await this.findEmail(email);
       if (user !== null) {
         // Put email and hashed password into db
