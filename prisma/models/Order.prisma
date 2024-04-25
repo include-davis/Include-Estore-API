@@ -5,7 +5,7 @@ enum OrderStatus{
 
 
 model Order {
-  id                        String    @id @default(uuid())
+  orderId                   String    @id @default(uuid())
   customer_name             String      
   customer_email            String
   customer_phone_num        String

@@ -1,44 +1,80 @@
+import { OrderStatus } from "@prisma/client";
 import prisma from "../prisma/client";
+
+type CreateOrderInput = {
+  status: OrderStatus;
+  customerName: string;
+  customerEmail: string;
+  customerPhoneNum: string;
+  billingAddressLine1: string;
+  billingAddressLine2: string;
+  billingCity: string;
+  billingZip: string;
+  billingCountry: string;
+  shippingAddressLine1: string;
+  shippingAddressLine2: string;
+  shippingCity: string;
+  shippingZip: string;
+  shippingCountry: string;
+};
 
 export default class Orders {
   // CREATE
-  static async create({ userId, input }) {
-    const { status, items } = input; // Assuming 'items' is an array of item IDs
+  static async create({ input } : {input: CreateOrderInput }) {
+    const {
+      status,
+      customerName,
+      customerEmail,
+      customerPhoneNum,
+      billingAddressLine1,
+      billingAddressLine2,
+      billingCity,
+      billingZip,
+      billingCountry,
+      shippingAddressLine1,
+      shippingAddressLine2,
+      shippingCity,
+      shippingZip,
+      shippingCountry,
+    } = input;
     const order = await prisma.order.create({
       data: {
-        userId,
         status,
-        items: {
-          connect: items.map(item => ({ id: item }))
-        },
+        customerName,
+        customerEmail,
+        customerPhoneNum,
+        billingAddressLine1,
+        billingAddressLine2,
+        billingCity,
+        billingZip,
+        billingCountry,
+        shippingAddressLine1,
+        shippingAddressLine2,
+        shippingCity,
+        shippingZip,
+        shippingCountry,
       },
     });
     return order;
   }
 
   // READ
-  static async find({ id }) {
+  static async find({ id } : {id : number}) {
     return prisma.order.findUnique({
       where: { id },
-      include: {
-        items: true, // Assuming you have a relation setup to include items details
-      },
     });
   }
 
   static async findAll() {
     return prisma.order.findMany({
-      include: {
-        items: true, // Including items details
-      },
     });
   }
 
   // UPDATE
   // Assuming you might want to update the status of an order
-  static async updateStatus({ orderId, status }) {
+  static async updateStatus({ id, status } : {id : number, status: OrderStatus}) {
     const updatedOrder = await prisma.order.update({
-      where: { id: orderId },
+      where: { id },
       data: { status },
     });
     return updatedOrder;
@@ -51,42 +87,5 @@ export default class Orders {
       where: { id },
     });
     return deleteOrder;
-  }
-
-  // ADDITIONAL FUNCTIONALITY
-  // Example: Add item to order
-  static async addItem({ orderId, itemId }) {
-    try {
-      const order = await prisma.order.update({
-        where: { id: orderId },
-        data: {
-          items: {
-            connect: { id: itemId },
-          },
-        },
-      });
-      return order;
-    } catch (e) {
-      console.error("Error adding item to order: ", e);
-      return false;
-    }
-  }
-
-  // Example: Remove item from order
-  static async removeItem({ orderId, itemId }) {
-    try {
-      const order = await prisma.order.update({
-        where: { id: orderId },
-        data: {
-          items: {
-            disconnect: { id: itemId },
-          },
-        },
-      });
-      return order;
-    } catch (e) {
-      console.error("Error removing item from order: ", e);
-      return false;
-    }
   }
 }

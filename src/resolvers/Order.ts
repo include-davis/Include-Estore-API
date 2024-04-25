@@ -1,15 +1,16 @@
-import Order from "../services/Order.ts"
+import Order from "../services/Order";
+import { orderId, CreateOrderInput } from "../typeDefs/Order";
 
 const resolvers = {
   Order: {
     playlists: () => null,
   },
   Query: {
-    song: (_, { id }) => Order.find({ id }),
-    songs: () => Order.findAll(),
+    order: (_: any, { id }: { id: orderId}) => Order.find({ id }),
+    orders: () => Order.findAll(),
   },
   Mutation: {
-    createOrder: (_, { input }) => Order.create({ input }),
+    createOrder: (_:any, { input } : {input: CreateOrderInput}) => Order.create({ userId, input }),
   },
 };
 export default resolvers;
