@@ -12,11 +12,13 @@ import prisma from "./prisma/client";
 // Type definitions
 import typeDefs from "./typeDefs/index";
 import resolvers from "./resolvers/index";
+import Authentications from "./services/Authentications";
 
 // Define Prisma Client type
 type Context = {
   prisma: PrismaClient;
-  token?: string;
+  user: any;
+  response: any;
 };
 
 // Main server function
@@ -56,9 +58,12 @@ async function startServer() {
     cors(),
     express.json(),
     expressMiddleware(server, {
-      context: async ({ req }): Promise<Context> => ({
+      context: async ({ req, res }): Promise<Context> => ({
         prisma,
-        token: req.headers.token as string, // Assuming 'token' is present in headers
+        user: await Authentications.login({
+          email: req.body.email, password: req.body.password, res,
+        }),
+        response: res,
       }),
     }),
   );
