@@ -12,7 +12,22 @@ import prisma from "./prisma/client";
 // Type definitions
 import typeDefs from "./typeDefs/index";
 import resolvers from "./resolvers/index";
-import Authentications from "./services/Authentications";
+
+import { verifyToken } from "./util/authToken";
+
+// Check the auth state with this function
+async function authenticate({ req }) {
+  // Check if the token has expired
+  const token = req.cookies.get("auth_token")?.value;
+  if (!token) {
+    return { user: null };
+  }
+  const verification = verifyToken(token);
+  if (verification.ok && verification.body.expires < Date.now()) {
+    return { user: verification.body };
+  }
+  return { user: null };
+}
 
 // Define Prisma Client type
 type Context = {
@@ -60,9 +75,7 @@ async function startServer() {
     expressMiddleware(server, {
       context: async ({ req, res }): Promise<Context> => ({
         prisma,
-        user: await Authentications.login({
-          email: req.body.email, password: req.body.password, res,
-        }),
+        user: ((await authenticate({ req })).user),
         response: res,
       }),
     }),
