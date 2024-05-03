@@ -3,6 +3,7 @@ import { ApolloServer } from "@apollo/server";
 // import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import express from "express";
 import http from "http";
 import cors from "cors";
@@ -16,9 +17,9 @@ import resolvers from "./resolvers/index";
 import { verifyToken } from "./util/authToken";
 
 // Check the auth state with this function
-async function authenticate({ req }) {
+async function authenticate(req) {
   // Check if the token has expired
-  const token = req.cookies.get("auth_token")?.value;
+  const token = req.cookie.get("auth_token")?.value;
   if (!token) {
     return { user: null };
   }
@@ -33,7 +34,7 @@ async function authenticate({ req }) {
 type Context = {
   prisma: PrismaClient;
   user: any;
-  response: any;
+  res: express.Response;
 };
 
 // Main server function
@@ -43,9 +44,16 @@ async function startServer() {
 
   // Create Apollo Server instance
   const server = new ApolloServer({
+    // introspection: true,
     typeDefs,
     resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [ApolloServerPluginDrainHttpServer({
+      httpServer,
+    }),
+    ApolloServerPluginLandingPageLocalDefault({
+      includeCookies: true,
+    }),
+    ],
     // format custom error here
     // eslint-disable-next-line no-unused-vars
     formatError: (formattedError, error) => {
@@ -74,9 +82,10 @@ async function startServer() {
     express.json(),
     expressMiddleware(server, {
       context: async ({ req, res }): Promise<Context> => ({
+        // console.log(req.cookies.get("auth_token")?.value);
         prisma,
-        user: ((await authenticate({ req })).user),
-        response: res,
+        user: ((await authenticate(req)).user),
+        res,
       }),
     }),
   );
