@@ -17,9 +17,10 @@ import resolvers from "./resolvers/index";
 import { verifyToken } from "./util/authToken";
 
 // Check the auth state with this function
-async function authenticate(req) {
+async function authenticate({ req }) {
   // Check if the token has expired
-  const token = req.cookie.get("auth_token")?.value;
+  // const token = req.cookies.get("auth_token")?.value; // only for nextjs
+  const token = req.headers.cookie.split("=")[1];
   if (!token) {
     return { user: null };
   }
@@ -44,7 +45,6 @@ async function startServer() {
 
   // Create Apollo Server instance
   const server = new ApolloServer({
-    // introspection: true,
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({
@@ -84,7 +84,7 @@ async function startServer() {
       context: async ({ req, res }): Promise<Context> => ({
         // console.log(req.cookies.get("auth_token")?.value);
         prisma,
-        user: ((await authenticate(req)).user),
+        user: ((await authenticate({ req })).user),
         res,
       }),
     }),

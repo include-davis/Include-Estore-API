@@ -7,21 +7,8 @@ import bcrypt from "bcrypt";
 import prisma from "../prisma/client";
 import { createToken } from "../util/authToken";
 
-const expireTime = Date.now() + 100 * 360 * 1;
+const expireTime = Date.now() + 60 * 360;
 
-/**
- *
- * @param token represents the JWT to be stored in the cookie
- */
-function setCookie(data: any, res: any, expiration: number) {
-  res.cookie("auth_token", createToken(data), {
-    expires: new Date(expiration),
-    path: "/",
-    secure: true,
-    httpOnly: true,
-    sameSite: "strict",
-  });
-}
 export default class Authentication {
   /**
   * Retrieve email from database
@@ -59,7 +46,7 @@ export default class Authentication {
         },
       });
     }
-    setCookie(user, res, expireTime);
+    res.setHeader("Set-Cookie", `auth_token=${createToken(user).body}; HttpOnly; Secure; SameSite=Strict; Expires=${expireTime}`);
     return user; // return user object
   }
 
@@ -81,7 +68,7 @@ export default class Authentication {
 
       const createNewUser = await prisma.authentication.create({ data: newUser });
       if (createNewUser !== null) {
-        setCookie(newUser, res, expireTime);
+        res.setHeader("Set-Cookie", `auth_token=${createToken(user).body}; HttpOnly; Secure; SameSite=Strict; Expires=${expireTime}`);
         return newUser;
       }
     }
