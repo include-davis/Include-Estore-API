@@ -4,6 +4,7 @@ const typeDefs = gql`
   type Product {
     id: ID!
     inventory: Inventory!
+    tags: [ProductToTag]
     name: String!
     price: Float!
     description: String!
@@ -41,7 +42,7 @@ const typeDefs = gql`
 
   type Query {
     product(id: ID!): Product
-    products: [Product]
+    products(id: [ID]): [Product]
   }
 
   type Mutation {

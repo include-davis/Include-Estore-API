@@ -87,4 +87,18 @@ export default class Products {
       return false;
     }
   }
+
+  static async findTags({ id }) {
+    return prisma.tag.findMany({
+      where: {
+        products: {
+          some: {
+            product: {
+              id,
+            },
+          },
+        },
+      },
+    });
+  }
 }

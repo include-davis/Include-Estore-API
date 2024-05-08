@@ -7,28 +7,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id                    String         @id @default(uuid())
-  inventory             Inventory? @relation("product_inventory")
-  name                  String
-  price                 Int
-  description           String
-  details               String
-  weight                Int
-  height                Int
-  width                 Int
-  depth                 Int
-  special_label_needed  Boolean
+model Inventory {
+  id                 String  @id @unique
+  product            Product @relation("product_inventory", fields: [id], references: [id], onDelete: Cascade)
+  available_quantity Int
+  cost_of_production Float
+  lead_time          Int
+  reorder_point      Int
+  reorder_quantity   Int
+  safety_stock       Int
+  stock_on_order     Int
 }
 
-model Inventory {
-  id                      String         @id @unique
-  product                 Product @relation("product_inventory", fields: [id], references: [id], onDelete: Cascade)
-  available_quantity      Int
-  cost_of_production      Int
-  lead_time               Int
-  reorder_point           Int
-  reorder_quantity        Int
-  safety_stock            Int
-  stock_on_order          Int
+model Product {
+  id                   String         @id @default(uuid())
+  inventory            Inventory?     @relation("product_inventory")
+  tags                 ProductToTag[] @relation("product_tag")
+  name                 String
+  price                Float
+  description          String
+  details              String
+  weight               Int
+  height               Int
+  width                Int
+  depth                Int
+  special_label_needed Boolean
+}
+
+model ProductToTag {
+  product_id           String  @unique
+  product              Product @relation("product_tag", fields: [product_id], references: [id], onDelete: Cascade)
+  tag_id               String  @unique
+  tag                  Tag @relation("tag_product", fields: [tag_id], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id       String         @id @default(uuid())
+  name     String         @unique
+  products ProductToTag[] @relation("tag_product")
 }

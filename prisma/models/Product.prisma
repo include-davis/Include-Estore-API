@@ -1,6 +1,7 @@
 model Product {
-  id                   String  @id @default(uuid())
-  inventory            Inventory? @relation("product_inventory")
+  id                   String        @id @default(uuid())
+  inventory            Inventory?    @relation("product_inventory")
+  tags                 ProductToTag[] @relation("product_tag")
   name                 String
   price                Float
   description          String

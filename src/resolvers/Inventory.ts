@@ -1,7 +1,10 @@
 import Inventories from "../services/Inventories";
+import Products from "../services/Products";
 
 const resolvers = {
-  Inventory: {},
+  Inventory: {
+    product: ({ id }) => Products.find({ id }),
+  },
   Query: {
     inventory: (_, { id }) => Inventories.find({ id }),
   },
