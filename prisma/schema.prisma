@@ -13,7 +13,6 @@ model Authentication {
   password String
 }
 
-
 model Products {
   id                   String  @id @default(uuid())
   name                 String
@@ -26,7 +25,6 @@ model Products {
   depth                Int
   special_label_needed Boolean
 }
-
 
 model User {
   //this user model takes in email, password, address, city, country, and zipCode

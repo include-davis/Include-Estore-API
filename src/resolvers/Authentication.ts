@@ -2,9 +2,9 @@ import Authentications from "../services/Authentications";
 
 const resolvers = {
   Mutation: {
-    Login: ({ email, password }) =>
+    login: ({ email, password }) =>
       Authentications.login({ email, password }),
-    Register: ({ email, password }) =>
+    register: ({ email, password }) =>
       Authentications.register({ email, password }),
   },
 };

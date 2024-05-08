@@ -1,6 +1,5 @@
+import bcrypt from "bcryptjs";
 import prisma from "../prisma/client";
-
-const bcrypt = require("bcryptjs");
 
 export default class Authentication {
   /**
