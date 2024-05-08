@@ -6,6 +6,7 @@ const resolvers = {
   },
   Query: {
     tag: (_, { id }) => Tags.find({ id }),
+    tagName: (_, { name }) => Tags.findName({ name }),
     manyTags: (_, { ids }) => Tags.findAll({ ids }),
   },
   Mutation: {

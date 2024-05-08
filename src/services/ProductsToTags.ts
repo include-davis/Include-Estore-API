@@ -4,16 +4,19 @@ export default class ProductsToTags {
   // CREATE
   static async create({ input }) {
     const {
-      productId,
-      tagId,
+      product_id,
+      tag_name,
     } = input;
+    console.log(product_id);
+    console.log(tag_name);
+    console.log(input);
     const productToTag = await prisma.productToTag.create({
       data: {
         product: {
-          connect: { id: productId },
+          connect: { id: product_id },
         },
         tag: {
-          connect: { id: tagId },
+          connect: { name: tag_name },
         },
       },
     });
@@ -32,5 +35,9 @@ export default class ProductsToTags {
     } catch (e) {
       return false;
     }
+  }
+
+  static async findAll() {
+    return prisma.productToTag.findMany();
   }
 }

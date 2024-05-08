@@ -5,7 +5,10 @@ import Tags from "../services/Tags";
 const resolvers = {
   ProductToTag: {
     product: (_, { id }) => Products.find({ id }),
-    tag: (_, { id }) => Tags.find({ id }),
+    tag: (_, { name }) => Tags.findName({ name }),
+  },
+  Query: {
+    manyPTTs: (_) => ProductsToTags.findAll(),
   },
   Mutation: {
     addProductToTag: (_, { input }) => ProductsToTags.create({ input }),

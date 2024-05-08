@@ -28,6 +28,10 @@ export default class Tags {
     return prisma.tag.findUnique({ where: { id } });
   }
 
+  static async findName({ name }) {
+    return prisma.tag.findUnique({ where: { name } });
+  }
+
   static async findAll({ ids }) {
     if (!ids) {
       return prisma.tag.findMany();

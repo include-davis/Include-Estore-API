@@ -13,6 +13,7 @@ const typeDefs = gql`
 
   type Query {
     tag(id: ID!): Tag
+    tagName(name: String!): Tag
     manyTags(id: [ID]): [Tag]
   }
 

@@ -4,6 +4,7 @@ import Inventories from "../services/Inventories";
 const resolvers = {
   Product: {
     inventory: ({ id }) => Inventories.find({ id }),
+    tags: (_, { id }) => Products.findTags({ id }),
   },
   Query: {
     product: (_, { id }) => Products.find({ id }),
