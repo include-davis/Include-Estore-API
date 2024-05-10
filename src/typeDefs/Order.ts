@@ -1,4 +1,5 @@
 import { gql } from "graphql-tag";
+import { OrderStatus } from "@prisma/client";
 
 const typeDefs = gql`
   enum OrderStatus {
@@ -12,17 +13,17 @@ const typeDefs = gql`
     customerEmail: String!
     customerPhoneNum: String!
     billingAddressLine1: String!
-    billingAddressLine2: String!
+    billingAddressLine2: String
     billingCity: String!
     billingZip: String!
     billingCountry: String!
     shippingAddressLine1: String!
-    shippingAddressLine2: String!
+    shippingAddressLine2: String
     shippingCity: String!
     shippingZip: String!
     shippingCountry: String!
     status: OrderStatus!
-    createdAt: String! # Consider using DateTime if supported
+    createdAt: String!  # Consider using DateTime if supported
   }
 
   type Query {
@@ -41,7 +42,7 @@ const typeDefs = gql`
     customerEmail: String!
     customerPhoneNum: String!
     billingAddressLine1: String!
-    billingAddressLine2: String!
+    billingAddressLine2: String
     billingCity: String!
     billingZip: String!
     billingCountry: String!
@@ -51,10 +52,27 @@ const typeDefs = gql`
     shippingZip: String!
     shippingCountry: String!
     status: OrderStatus!
-    createdAt: String! # Consider using DateTime if supported
+    createdAt: String!  # Consider using DateTime if supported
   }
 `;
 
 export default typeDefs;
 
-export type orderId = String;
+export type CreateOrderInput = {
+  orderId: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhoneNum: string;
+  billingAddressLine1: string;
+  billingAddressLine2: string;
+  billingCity: string;
+  billingZip: string;
+  billingCountry: string;
+  shippingAddressLine1: string;
+  shippingAddressLine2: string;
+  shippingCity: string;
+  shippingZip: string;
+  shippingCountry: string;
+  status: OrderStatus;
+  createdAt: string;
+};

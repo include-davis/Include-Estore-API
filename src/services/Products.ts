@@ -3,7 +3,7 @@ import prisma from "../prisma/client";
 export default class Products {
   // CREATE
   static async create({ input }) {
-    const products = await prisma.products.create({
+    const products = await prisma.product.create({
       data: input,
     });
     return products;
@@ -11,14 +11,14 @@ export default class Products {
 
   // READ
   static async find({ id }) {
-    return prisma.products.findUnique({ where: { id } });
+    return prisma.product.findUnique({ where: { id } });
   }
 
   static async findAll({ ids }) {
     if (!ids) {
-      return prisma.products.findMany();
+      return prisma.product.findMany();
     }
-    return prisma.products.findMany({
+    return prisma.product.findMany({
       where: {
         id: {
           in: ids,
@@ -32,7 +32,7 @@ export default class Products {
     try {
       const user = await prisma.user.update({
         where: {
-          id,
+          Id: id,
         },
         data: input,
       });
@@ -45,7 +45,7 @@ export default class Products {
   // DELETE
   static async delete({ id }) {
     try {
-      await prisma.products.delete({
+      await prisma.product.delete({
         where: {
           id,
         },

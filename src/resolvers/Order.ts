@@ -1,16 +1,20 @@
-import Order from "../services/Order";
-import { orderId, CreateOrderInput } from "../typeDefs/Order";
+import { OrderStatus } from "@prisma/client";
+import Orders from "../services/Order"; // Ensure correct path to Orders class
+import { CreateOrderInput } from "../typeDefs/Order";
 
 const resolvers = {
-  Order: {
-    playlists: () => null,
-  },
   Query: {
-    order: (_: any, { id }: { id: orderId}) => Order.find({ id }),
-    orders: () => Order.findAll(),
+    // Directly returning the promise from the service method
+    getOrder: (_: any, { id }: { id: number }) => Orders.find({ id }),
+    listOrders: () => Orders.findAll(),
   },
   Mutation: {
-    createOrder: (_:any, { input } : {input: CreateOrderInput}) => Order.create({ userId, input }),
+    // Directly returning the promise from the service method
+    createOrder: (_: any, { input }: { input: CreateOrderInput }) => Orders.create({ input }),
+    updateOrderStatus: (_: any, { id, status }: { id: number; status: OrderStatus }) =>
+      Orders.updateStatus({ id, status }),
+    deleteOrder: (_: any, { id }: { id: number }) => Orders.delete({ id }),
   },
 };
+
 export default resolvers;
