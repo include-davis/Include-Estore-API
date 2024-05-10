@@ -1,0 +1,11 @@
+model Inventory {
+  id                        String    @id @default(uuid())
+  available_quantity        Int
+  cost_of_production        Int
+  load_time                 Int
+  reorder_point             Int
+  reorder_quantity          Int
+  safety_stock              Int
+  stock_on_order            Int
+}
+

@@ -1,0 +1,6 @@
+model ProductToOrder {
+  product_id                        String    @id @default(uuid())
+  order_id                          String    
+  quantity                          Int
+}
+

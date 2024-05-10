@@ -1,0 +1,4 @@
+model ProductoToTag {
+  prdouct_id  String    @id @default(uuid())
+  tag_name    String
+}

@@ -7,58 +7,99 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Authentication {
-  id       String @id @default(uuid())
-  email    String
-  password String
+model Inventory {
+  id                Int     @id @default(autoincrement())
+  inventoryId       Int     @unique
+  product           Product @relation(fields: [inventoryId], references: [id])
+  availableQuantity Int
+  costOfProduction  Int
+  loadTime          Int
+  reorderPoint      Int
+  reorderQuantity   Int
+  safetyStock       Int
+  stockOnOrder      Int
 }
 
-model Playlist {
-  id        String           @id @default(uuid())
-  name      String
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  songs     PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+enum OrderStatus {
+  PENDING
+  COMPLETED
 }
 
-model PlaylistToSong {
-  playlistId String
-  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  songId     String
-  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Order {
+  id                   Int         @id @default(autoincrement())
+  customerName         String
+  customerEmail        String
+  customerPhoneNum     String
+  billingAddressLine1  String
+  billingAddressLine2  String
+  billingCity          String
+  billingZip           String
+  billingCountry       String
+  shippingAddressLine1 String
+  shippingAddressLine2 String
+  shippingCity         String
+  shippingZip          String
+  shippingCountry      String
+  status               OrderStatus
+  createdAt            DateTime    @default(now())
 
-  @@id(name: "id", fields: [playlistId, songId])
+  ProductToOrder ProductToOrder[]
 }
 
-model Products {
-  id                   String  @id @default(uuid())
-  name                 String
-  price                Int
-  description          String
-  details              String
-  weight               Int
-  height               Int
-  width                Int
-  depth                Int
-  special_label_needed Boolean
+model Product {
+  id                 Int              @id @default(autoincrement())
+  inventory          Inventory?
+  name               String?
+  price              Int
+  description        String
+  details            String
+  weight             Int
+  height             Int
+  width              Int
+  depth              Int
+  specialLabelNeeded Boolean
+  ProductToOrder     ProductToOrder[]
+  ProductoToTag      ProductoToTag[]
 }
 
-model Song {
-  id        String           @id @default(uuid())
-  name      String
-  playlists PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+model ProductToOrder {
+  productId Int
+  orderId   Int
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id])
+
+  @@id(name: "id", fields: [productId, orderId])
+}
+
+model ProductoToTag {
+  productId Int
+  tagName   String
+  product   Product @relation(fields: [productId], references: [id])
+  tag       Tag     @relation(fields: [tagName], references: [name])
+
+  @@id(name: "id", fields: [productId])
+}
+
+model Tag {
+  name          String          @unique
+  ProductoToTag ProductoToTag[]
 }
 
 model User {
-  id        String     @id @default(uuid())
-  name      String
-  playlists Playlist[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  Id                   Int     @id @default(autoincrement())
+  name                 String?
+  email                String  @unique
+  password             String
+  shippingAddressLine1 String
+  shippingAddressLine2 String
+  shippingCity         String
+  shippingZip          String
+  shippingCountry      String
+}
+
+model Authentication {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
 }
