@@ -8,6 +8,7 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import cookieParser from "cookie-parser";
 import prisma from "./prisma/client";
 
 // Type definitions
@@ -19,8 +20,7 @@ import { verifyToken } from "./util/authToken";
 // Check the auth state with this function
 async function authenticate({ req }) {
   // Check if the token has expired
-  // const token = req.cookies.get("auth_token")?.value; // only for nextjs
-  const token = req.headers.cookie.split("=")[1];
+  const token = req.cookies.auth_token;
   if (!token) {
     return { user: null };
   }
@@ -79,6 +79,7 @@ async function startServer() {
   app.use(
     "/graphql",
     cors(),
+    cookieParser(),
     express.json(),
     expressMiddleware(server, {
       context: async ({ req, res }): Promise<Context> => ({
