@@ -7,8 +7,6 @@ import bcrypt from "bcrypt";
 import prisma from "../prisma/client";
 import { createToken } from "../util/authToken";
 
-const expireTime = Date.now() + 60 * 360;
-
 export default class Authentication {
   /**
   * Retrieve email from database
@@ -42,11 +40,13 @@ export default class Authentication {
     if (isPasswordValid === false) {
       throw new GraphQLError("Cannot login, wrong password.", {
         extensions: {
-          code: "NOT_FOUND",
+          code: "WRONG_PASSWORD",
         },
       });
     }
-    res.setHeader("Set-Cookie", `auth_token=${createToken(user).body}; HttpOnly; Secure; SameSite=Strict; Expires=${expireTime}`);
+    res.cookie("auth_token", createToken(user).body, {
+      httpOnly: true, secure: true, sameSite: "Strict",
+    });
     return user; // return user object
   }
 
@@ -68,13 +68,15 @@ export default class Authentication {
 
       const createNewUser = await prisma.authentication.create({ data: newUser });
       if (createNewUser !== null) {
-        res.setHeader("Set-Cookie", `auth_token=${createToken(user).body}; HttpOnly; Secure; SameSite=Strict; Expires=${expireTime}`);
+        res.cookie("auth_token", createToken(newUser).body, {
+          httpOnly: true, secure: true, sameSite: "Strict",
+        });
         return newUser;
       }
     }
     throw new GraphQLError("Cannot register", {
       extensions: {
-        code: "NOT_FOUND",
+        code: "USER_EXISTS",
       },
     });
   }
