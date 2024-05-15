@@ -47,7 +47,6 @@ export default class Authentication {
       });
     }
     res.setHeader("Set-Cookie", `auth_token=${createToken(user).body}; HttpOnly; Secure; SameSite=Strict; Expires=${expireTime}`);
-    res.send();
     return user; // return user object
   }
 
@@ -70,7 +69,6 @@ export default class Authentication {
       const createNewUser = await prisma.authentication.create({ data: newUser });
       if (createNewUser !== null) {
         res.setHeader("Set-Cookie", `auth_token=${createToken(user).body}; HttpOnly; Secure; SameSite=Strict; Expires=${expireTime}`);
-        res.send();
         return newUser;
       }
     }
