@@ -6,7 +6,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 
 // Configuration
-const secretKey = "top secret"; // Secret key for JWT signing and verification
+const { JWT_SECRET } = process.env; // Secret key for JWT signing and verification
 
 /**
  * Represents an optional value of type T.
@@ -62,7 +62,7 @@ export type Context = {
  * @returns The response indicating the success or failure of token creation.
  */
 export function createToken(data: any, durationOfToken: string = "1h"): CreateTokenResponse {
-  const token = jwt.sign(data, secretKey, {
+  const token = jwt.sign(data, JWT_SECRET, {
     expiresIn: durationOfToken,
   });
 
@@ -80,7 +80,7 @@ export function createToken(data: any, durationOfToken: string = "1h"): CreateTo
  */
 export function verifyToken(token: Token): VerifyTokenResponse {
   try {
-    const decodedToken: DecodedToken = jwt.verify(token, secretKey);
+    const decodedToken: DecodedToken = jwt.verify(token, JWT_SECRET);
     return {
       ok: true,
       body: decodedToken,
