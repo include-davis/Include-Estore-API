@@ -223,8 +223,15 @@ export default class Authentication {
       const salt = bcrypt.genSaltSync(5);
       const passwordHash = bcrypt.hashSync(password, salt);
 
-      // TODO: Set the password in the actual database
-      throw new Error("Not implemented");
+      prisma.authentication.updateMany({
+        where: {
+          email,
+        },
+        data: {
+          password: passwordHash,
+        },
+      });
+      return true;
     } catch {
       return false;
     }
