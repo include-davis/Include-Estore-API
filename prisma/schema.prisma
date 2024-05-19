@@ -7,37 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Inventory {
+  id                 String  @id @unique
+  product            Product @relation("product_inventory", fields: [id], references: [id], onDelete: Cascade)
+  available_quantity Int
+  cost_of_production Float
+  lead_time          Int
+  reorder_point      Int
+  reorder_quantity   Int
+  safety_stock       Int
+  stock_on_order     Int
+}
+
 model Authentication {
   id       String @id @default(uuid())
   email    String
   password String
 }
 
-model Playlist {
-  id        String           @id @default(uuid())
-  name      String
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  songs     PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-}
-
-model PlaylistToSong {
-  playlistId String
-  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  songId     String
-  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@id(name: "id", fields: [playlistId, songId])
-}
-
-model Products {
-  id                   String  @id @default(uuid())
+model Product {
+  id                   String         @id @default(uuid())
+  inventory            Inventory?     @relation("product_inventory")
+  tags                 ProductToTag[] @relation("product_tag")
   name                 String
-  price                Int
+  price                Float
   description          String
   details              String
   weight               Int
@@ -47,18 +40,16 @@ model Products {
   special_label_needed Boolean
 }
 
-model Song {
-  id        String           @id @default(uuid())
-  name      String
-  playlists PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+model ProductToTag {
+  product_id           String
+  product              Product @relation("product_tag", fields: [product_id], references: [id], onDelete: Cascade)
+  tag_name             String
+  tag                  Tag @relation("tag_product", fields: [tag_name], references: [name], onDelete: Cascade)
+  @@id([product_id, tag_name])
 }
 
-model User {
-  id        String     @id @default(uuid())
-  name      String
-  playlists Playlist[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model Tag {
+  id       String         @id @default(uuid())
+  name     String         @unique
+  products ProductToTag[] @relation("tag_product")
 }
