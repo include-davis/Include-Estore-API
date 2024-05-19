@@ -19,7 +19,7 @@ const typeDefs = gql`
 
   type Mutation {
     addProductToTag(input: ProductToTagInput!): ProductToTag
-    removeProductToTag(product_id: ID!): Boolean
+    removeProductToTag(input: ProductToTagInput!): Boolean
   }
 `;
 export default typeDefs;
