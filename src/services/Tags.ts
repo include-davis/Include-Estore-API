@@ -29,6 +29,7 @@ export default class Tags {
   }
 
   static async findName({ name }) {
+    // console.log(name);
     return prisma.tag.findUnique({ where: { name } });
   }
 
