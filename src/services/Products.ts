@@ -43,6 +43,7 @@ export default class Products {
 
   // READ
   static async find({ id }) {
+    // console.log(id);
     return prisma.product.findUnique({ where: { id } });
   }
 
