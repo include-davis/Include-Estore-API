@@ -4,19 +4,19 @@ export default class ProductsToTags {
   // CREATE
   static async create({ input }) {
     const {
-      product_id,
-      tag_name,
+      productId,
+      tagName,
     } = input;
-    // console.log(product_id);
-    // console.log(tag_name);
+    // console.log(productId);
+    // console.log(tagName);
     // console.log(input);
     const productToTag = await prisma.productToTag.create({
       data: {
         product: {
-          connect: { id: product_id },
+          connect: { id: productId },
         },
         tag: {
-          connect: { name: tag_name },
+          connect: { name: tagName },
         },
       },
     });
@@ -27,15 +27,15 @@ export default class ProductsToTags {
   // DELETE
   static async delete({ input }) {
     const {
-      product_id,
-      tag_name,
+      productId,
+      tagName,
     } = input;
     try {
       await prisma.productToTag.delete({
         where: {
           product_id_tag_name: {
-            product_id,
-            tag_name,
+            productId,
+            tagName,
           },
         },
       });
