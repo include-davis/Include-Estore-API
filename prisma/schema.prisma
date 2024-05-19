@@ -19,6 +19,12 @@ model Inventory {
   stock_on_order     Int
 }
 
+model Authentication {
+  id       String @id @default(uuid())
+  email    String
+  password String
+}
+
 model Product {
   id                   String         @id @default(uuid())
   inventory            Inventory?     @relation("product_inventory")
