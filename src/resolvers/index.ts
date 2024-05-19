@@ -4,5 +4,4 @@ import ProductToTag from "./ProductToTag";
 import Tag from "./Tag";
 import Authentication from "./Authentication";
 
-
 export default [Product, Inventory, ProductToTag, Tag, Authentication];
