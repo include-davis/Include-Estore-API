@@ -1,6 +1,6 @@
 model ProductToTag {
-  product_id           String  @unique
+  product_id           String
   product              Product @relation("product_tag", fields: [product_id], references: [id], onDelete: Cascade)
-  tag_name             String  @unique
+  tag_name             String
   tag                  Tag @relation("tag_product", fields: [tag_id], references: [id], onDelete: Cascade)
 }
