@@ -20,15 +20,23 @@ export default class ProductsToTags {
         },
       },
     });
+    console.log(productToTag.product_id);
     return productToTag;
   }
 
   // DELETE
-  static async delete({ id }) {
+  static async delete({ input }) {
+    const {
+      product_id,
+      tag_name,
+    } = input;
     try {
       await prisma.productToTag.delete({
         where: {
-          product_id: id,
+          product_id_tag_name: {
+            product_id,
+            tag_name,
+          },
         },
       });
       return true;
