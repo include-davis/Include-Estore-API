@@ -7,9 +7,9 @@ export default class ProductsToTags {
       product_id,
       tag_name,
     } = input;
-    console.log(product_id);
-    console.log(tag_name);
-    console.log(input);
+    // console.log(product_id);
+    // console.log(tag_name);
+    // console.log(input);
     const productToTag = await prisma.productToTag.create({
       data: {
         product: {
@@ -20,7 +20,7 @@ export default class ProductsToTags {
         },
       },
     });
-    console.log(productToTag.product_id);
+    // console.log(productToTag.product_id);
     return productToTag;
   }
 
