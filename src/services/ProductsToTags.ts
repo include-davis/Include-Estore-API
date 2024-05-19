@@ -34,8 +34,8 @@ export default class ProductsToTags {
       await prisma.productToTag.delete({
         where: {
           product_id_tag_name: {
-            productId,
-            tagName,
+            product_id: productId,
+            tag_name: tagName,
           },
         },
       });
