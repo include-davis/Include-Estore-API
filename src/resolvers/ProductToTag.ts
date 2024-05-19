@@ -12,7 +12,7 @@ const resolvers = {
   },
   Mutation: {
     addProductToTag: (_, { input }) => ProductsToTags.create({ input }),
-    removeProductToTag: (_, { id }) => ProductsToTags.delete({ id }),
+    removeProductToTag: (_, { input }) => ProductsToTags.delete({ input }),
   },
 };
 
