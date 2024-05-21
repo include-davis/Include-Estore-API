@@ -33,6 +33,7 @@ export default class Authentication {
         },
       });
     }
+
     const isPasswordValid = await bcrypt.compare(
       password,
       (await user).password,

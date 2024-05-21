@@ -4,6 +4,7 @@
       "moduleResolution": "Node",
       "module": "ESNext",
       "target": "ESNext",
+      "strict": true,
       "forceConsistentCasingInFileNames": true,
     },
     "include": ["src"]
