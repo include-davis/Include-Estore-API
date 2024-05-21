@@ -3,22 +3,22 @@ import { ApolloServer } from "@apollo/server";
 // import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import express from "express";
-import http from "http";
-import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import express from "express";
+import http from "http";
 import prisma from "./prisma/client";
 
 // Type definitions
-import typeDefs from "./typeDefs/index";
 import resolvers from "./resolvers/index";
+import typeDefs from "./typeDefs/index";
 import { authenticate } from "./util/authToken";
 
 // Define Prisma Client type
 type Context = {
   prisma: PrismaClient;
-  user: any;
+  user;
   res: express.Response;
 };
 
@@ -35,6 +35,39 @@ async function startServer() {
       httpServer,
     }),
     ],
+    formatError: (formattedError, error) => {
+      // Return a different error message for failing login and registers
+      if (
+        formattedError.extensions.code
+          === "NOT_FOUND"
+      ) {
+        return {
+          ...formattedError,
+          message: "User not found!",
+        };
+      }
+      if (
+        formattedError.extensions.code
+          === "USER_EXISTS"
+      ) {
+        return {
+          ...formattedError,
+          message: "User already exists!",
+        };
+      }
+      if (
+        formattedError.extensions.code
+          === "WRONG_PASSWORD"
+      ) {
+        return {
+          ...formattedError,
+          message: "Wrong password!",
+        };
+      }
+      // Otherwise return the formatted error. This error can also
+      // be manipulated in other ways, as long as it's returned.
+      return formattedError;
+    },
   });
 
   // Server startup and middleware setup
