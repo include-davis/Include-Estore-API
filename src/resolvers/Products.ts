@@ -2,13 +2,13 @@ import Products from "../services/Products";
 
 const resolvers = {
   Query: {
-    products: (_, { id }) => Products.find({ id }),
-    manyProducts: (_, { ids }) => Products.findAll({ ids }),
+    products: (_: any, { id }: any) => Products.find({ id }),
+    manyProducts: (_: any, { ids }: any) => Products.findAll({ ids }),
   },
   Mutation: {
-    createProducts: (_, { input }) => Products.create({ input }),
-    updateProducts: (_, { id, input }) => Products.update({ id, input }),
-    deleteProducts: (_, { id }) => Products.delete({ id }),
+    createProducts: (_: any, { input }: any) => Products.create({ input }),
+    updateProducts: (_: any, { id, input }: any) => Products.update({ id, input }),
+    deleteProducts: (_: any, { id }: any) => Products.delete({ id }),
   },
 };
 

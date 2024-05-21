@@ -89,13 +89,13 @@ export function verifyToken(token: Token): VerifyTokenResponse {
     return {
       ok: false,
       body: undefined,
-      error: e,
+      error: e as any,
     };
   }
 }
 
 // Check the auth state with this function
-export function authenticate({ req }) {
+export function authenticate({ req }: any) {
   try {
     const token = req.cookies.auth_token; // Retrieve token from cookies
     const context: Context = {

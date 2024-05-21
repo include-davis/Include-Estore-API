@@ -1,4 +1,4 @@
-import Authentication from "./Authentication.js";
-import Products from "./Products.js";
+import Authentication from "./Authentication";
+import Products from "./Products";
 
 export default [Authentication, Products];

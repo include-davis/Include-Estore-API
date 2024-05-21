@@ -2,12 +2,11 @@
   "name": "apollo-starter",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only --loader ts-node/esm --watch src src/index.ts",
+    "dev": "nodemon --exec babel-node --extensions '.ts,.js' src/index.ts",
+    "start": "babel-node dist/index.js",
+    "build": "babel  --extensions '.ts,.js' src --out-dir dist",
     "lint": "tsc && eslint src/**/*",
     "schema:gen": "run-script-os",
     "schema:gen:nix": "bash ./scripts/schema_gen/schema_gen.sh",
@@ -31,6 +30,11 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.5",
+    "@babel/core": "^7.24.5",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-typescript": "^7.24.1",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.6",
@@ -40,12 +44,13 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "nodemon": "^3.1.0",
     "prettier": "3.0.3",
     "prisma": "^5.10.2",
     "run-script-os": "^1.1.6",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsc-module-loader": "^0.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   }
 }

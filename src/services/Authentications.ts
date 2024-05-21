@@ -2,8 +2,8 @@
  * Handles Login/Register mutations
  */
 // import express from "express";
-import { GraphQLError } from "graphql";
 import bcrypt from "bcrypt";
+import { GraphQLError } from "graphql";
 import prisma from "../prisma/client";
 import { createToken } from "../util/authToken";
 
@@ -11,7 +11,7 @@ export default class Authentication {
   /**
   * Retrieve email from database
   */
-  static async findEmail(userEmail) {
+  static async findEmail(userEmail: any) {
     return prisma.authentication.findFirst({
       where: {
         email: userEmail as string,
@@ -22,7 +22,7 @@ export default class Authentication {
   /**
   * Try logging in, check for nonexistent user email or incorrect password
   */
-  static async login({ email, password, res }) {
+  static async login({ email, password, res }: any) {
     // try {
     // Retrieve object from database with the email
     const user = await this.findEmail(email);
@@ -53,7 +53,7 @@ export default class Authentication {
   /**
   * Create a user with this method, check for pre-existing user email
   */
-  static async register({ email, password, res }) {
+  static async register({ email, password, res }: any) {
     // Password stored as a hash, with editable salt from ENV file
     // edit salt so that it includes rounds
     const user = await this.findEmail(email);
