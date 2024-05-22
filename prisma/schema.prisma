@@ -13,27 +13,6 @@ model Authentication {
   password String
 }
 
-model Playlist {
-  id        String           @id @default(uuid())
-  name      String
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  songs     PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-}
-
-model PlaylistToSong {
-  playlistId String
-  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  songId     String
-  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@id(name: "id", fields: [playlistId, songId])
-}
-
 model Products {
   id                   String  @id @default(uuid())
   name                 String
@@ -47,18 +26,16 @@ model Products {
   special_label_needed Boolean
 }
 
-model Song {
-  id        String           @id @default(uuid())
-  name      String
-  playlists PlaylistToSong[]
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-}
-
 model User {
-  id        String     @id @default(uuid())
+  //this user model takes in email, password, address, city, country, and zipCode
+  id        String   @id @default(uuid())
   name      String
-  playlists Playlist[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  email     String   @unique //im unsure if we would need the user information
+  password  String
+  address   String
+  city      String
+  country   String
+  zipCode   String
+  createdAt DateTime @default(now()) //when we created the user
+  updatedAt DateTime @updatedAt //when the user was uodated
 }
