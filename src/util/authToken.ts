@@ -62,7 +62,7 @@ export type Context = {
  * @returns The response indicating the success or failure of token creation.
  */
 export function createToken(data: any, durationOfToken: string = "1h"): CreateTokenResponse {
-  const token = jwt.sign(data, JWT_SECRET, {
+  const token = jwt.sign(data, JWT_SECRET as string, {
     expiresIn: durationOfToken,
   });
 
@@ -80,7 +80,7 @@ export function createToken(data: any, durationOfToken: string = "1h"): CreateTo
  */
 export function verifyToken(token: Token): VerifyTokenResponse {
   try {
-    const decodedToken: DecodedToken = jwt.verify(token, JWT_SECRET);
+    const decodedToken: DecodedToken = jwt.verify(token, JWT_SECRET as string);
     return {
       ok: true,
       body: decodedToken,

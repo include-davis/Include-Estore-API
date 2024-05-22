@@ -8,8 +8,8 @@ const resolvers = {
       Authentications.register({ email, password }),
     generateHMACSignature: ({ email }: { email: string }) =>
       Authentications.generateHMACSignature(email),
-    verifyHMACSignature: ({ token }: { token: string }) =>
-      Authentications.verifyHMACSignature(token),
+    verifyHMACSignature: ({ data, signature }: { data: string, signature: string }) =>
+      Authentications.verifyHMACSignature(data, signature),
   },
 };
 

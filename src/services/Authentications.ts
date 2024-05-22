@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 
 const { PASSWORD_RESET_URL, HMAC_SECRET } = process.env;
 
+export type Optional<T> = T | null | undefined;
+
 export default class Authentication {
   /**
   * Retrieve email from database
@@ -135,7 +137,7 @@ export default class Authentication {
    * @param url The url
    * @return The associated data and signature
    */
-  static decodePasswordResetUrl(url: string): { data: string, signature: string } {
+  static decodePasswordResetUrl(url: string): { data: Optional<string>, signature: Optional<string> } {
     const parsedUrl = new URL(url);
     const queryParams = parsedUrl.searchParams;
     const data = queryParams.get("body");
@@ -149,7 +151,7 @@ export default class Authentication {
    * @return The HMAC signature
    */
   static generateHMACSignature(data: string): string {
-    return crypto.createHmac("sha256", HMAC_SECRET)
+    return crypto.createHmac("sha256", HMAC_SECRET as string)
       .update(data)
       .digest("hex");
   }
@@ -199,6 +201,10 @@ export default class Authentication {
   static resetPassword(url: string, password: string): boolean {
     try {
       const { data, signature } = this.decodePasswordResetUrl(url);
+
+      if (!data || !signature) {
+        return false;
+      }
 
       if (!this.verifyHMACSignature(data, signature)) {
         return false;
