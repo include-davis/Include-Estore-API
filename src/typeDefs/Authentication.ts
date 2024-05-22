@@ -7,8 +7,10 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    Login(email: String!, password: String!): Authentication
-    Register(email: String! password: String!): Authentication
+    login(email: String!, password: String!): Boolean
+    register(email: String! password: String!): Boolean
+    generateHMACSignature(email: String!, duration: String): String
+    verifyHMACSignature(token: String!): String
   }
 `;
 
