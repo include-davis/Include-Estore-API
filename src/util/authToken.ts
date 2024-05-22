@@ -2,7 +2,6 @@
  * Express.js middleware for authentication token verification.
  * Retrieves token from cookies, verifies it, and sends authentication context.
  */
-import express from "express";
 import jwt from "jsonwebtoken";
 
 // Configuration
@@ -61,7 +60,7 @@ export type Context = {
  * @param durationOfToken - Optional. Duration for which the token will be valid (default is "1h").
  * @returns The response indicating the success or failure of token creation.
  */
-export function createToken(data: any, durationOfToken: string = "1h"): CreateTokenResponse {
+export function createToken(data, durationOfToken: string = "1h"): CreateTokenResponse {
   const token = jwt.sign(data, secretKey, {
     expiresIn: durationOfToken,
   });
@@ -90,31 +89,20 @@ export function verifyToken(token: Token): VerifyTokenResponse {
     return {
       ok: false,
       body: undefined,
-      error: e,
+      error: e as any,
     };
   }
 }
 
-/**
- * Express router for token authentication
- */
-export const authTokenRouter = express.Router();
-
-/**
- * Middleware function to handle token authentication.
- * Retrieves token from cookies, verifies it, and sends authentication context.
- * @param req - The Express request object. Assumes that there exists req.cookies.token
- * @param res - The Express response object.
- * @param next - The next middleware function in the request-response cycle.
- */
-authTokenRouter.use((req, res, next) => {
+// Check the auth state with this function
+export function authenticate({ req }) {
   try {
-    const { token } = req.cookies; // Retrieve token from cookies
+    const token = req.cookies.auth_token; // Retrieve token from cookies
     const context: Context = {
       auth: verifyToken(token), // Verify token and create authentication context
     };
-    res.send(context); // Send authentication context in the response
-    next();
+    console.log(`context body: ${JSON.stringify(context.auth.body)}`);
+    return context;
   } catch (e) {
     const context: Context = {
       auth: {
@@ -123,7 +111,6 @@ authTokenRouter.use((req, res, next) => {
         error: e,
       } as VerifyTokenResponse,
     };
-    res.send(context); // Send error authentication context in case of exceptions
-    next();
+    return context;
   }
-});
+}
