@@ -2,8 +2,8 @@
  * Handles Login/Register mutations
  */
 // import express from "express";
-import { GraphQLError } from "graphql";
 import bcrypt from "bcrypt";
+import { GraphQLError } from "graphql";
 import prisma from "../prisma/client";
 import { createToken } from "../util/authToken";
 
@@ -33,6 +33,7 @@ export default class Authentication {
         },
       });
     }
+
     const isPasswordValid = await bcrypt.compare(
       password,
       (await user).password,

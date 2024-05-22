@@ -60,7 +60,7 @@ export type Context = {
  * @param durationOfToken - Optional. Duration for which the token will be valid (default is "1h").
  * @returns The response indicating the success or failure of token creation.
  */
-export function createToken(data: any, durationOfToken: string = "1h"): CreateTokenResponse {
+export function createToken(data, durationOfToken: string = "1h"): CreateTokenResponse {
   const token = jwt.sign(data, secretKey, {
     expiresIn: durationOfToken,
   });
@@ -89,7 +89,7 @@ export function verifyToken(token: Token): VerifyTokenResponse {
     return {
       ok: false,
       body: undefined,
-      error: e,
+      error: e as any,
     };
   }
 }
