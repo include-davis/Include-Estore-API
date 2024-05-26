@@ -18,7 +18,7 @@ import { authenticate } from "./util/authToken";
 // Define Prisma Client type
 type Context = {
   prisma: PrismaClient;
-  user;
+  user: any;
   res: express.Response;
 };
 
@@ -35,8 +35,11 @@ async function startServer() {
       httpServer,
     }),
     ],
-    formatError: (formattedError, error) => {
+    formatError: (formattedError) => {
       // Return a different error message for failing login and registers
+      if (formattedError.extensions === undefined) {
+        return formattedError;
+      }
       if (
         formattedError.extensions.code
           === "NOT_FOUND"

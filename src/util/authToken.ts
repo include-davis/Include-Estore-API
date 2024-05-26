@@ -5,7 +5,7 @@
 import jwt from "jsonwebtoken";
 
 // Configuration
-const secretKey = "top secret"; // Secret key for JWT signing and verification
+const { JWT_SECRET } = process.env; // Secret key for JWT signing and verification
 
 /**
  * Represents an optional value of type T.
@@ -60,8 +60,8 @@ export type Context = {
  * @param durationOfToken - Optional. Duration for which the token will be valid (default is "1h").
  * @returns The response indicating the success or failure of token creation.
  */
-export function createToken(data, durationOfToken: string = "1h"): CreateTokenResponse {
-  const token = jwt.sign(data, secretKey, {
+export function createToken(data: any, durationOfToken: string = "1h"): CreateTokenResponse {
+  const token = jwt.sign(data, JWT_SECRET as string, {
     expiresIn: durationOfToken,
   });
 
@@ -79,7 +79,7 @@ export function createToken(data, durationOfToken: string = "1h"): CreateTokenRe
  */
 export function verifyToken(token: Token): VerifyTokenResponse {
   try {
-    const decodedToken: DecodedToken = jwt.verify(token, secretKey);
+    const decodedToken: DecodedToken = jwt.verify(token, JWT_SECRET as string);
     return {
       ok: true,
       body: decodedToken,
@@ -89,19 +89,18 @@ export function verifyToken(token: Token): VerifyTokenResponse {
     return {
       ok: false,
       body: undefined,
-      error: e as any,
+      error: e as Optional<Error>,
     };
   }
 }
 
 // Check the auth state with this function
-export function authenticate({ req }) {
+export function authenticate({ req }: { req: any }) {
   try {
-    const token = req.cookies.auth_token; // Retrieve token from cookies
+    const { token } = req.cookies; // Retrieve token from cookies
     const context: Context = {
       auth: verifyToken(token), // Verify token and create authentication context
     };
-    console.log(`context body: ${JSON.stringify(context.auth.body)}`);
     return context;
   } catch (e) {
     const context: Context = {
