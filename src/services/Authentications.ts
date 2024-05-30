@@ -1,12 +1,25 @@
+import bcrypt from "bcryptjs";
 import prisma from "../prisma/client";
 
-const bcrypt = require("bcryptjs");
+type EmailArgs = {
+  email: string;
+};
+
+type LoginArgs = {
+  email: string;
+  password: string;
+};
+
+type RegisterArgs = {
+  email: string;
+  password: string;
+};
 
 export default class Authentication {
   /**
-  * Retrieve email from database
-  */
-  static async findEmail({ email }) {
+   * Retrieve email from database
+   */
+  static async findEmail({ email }: EmailArgs) {
     try {
       return prisma.authentication.findFirstOrThrow({
         where: {
@@ -19,17 +32,17 @@ export default class Authentication {
   }
 
   /**
-  * Try logging in, check for nonexistent user email or incorrect password
-  */
-  static async login({ email, password }) {
+   * Try logging in, check for nonexistent user email or incorrect password
+   */
+  static async login({ email, password }: LoginArgs) {
     try {
       // Retrieve object from database with the email
-      const emailObject = this.findEmail(email);
+      const emailObject = this.findEmail({ email });
       const isPasswordValid = await bcrypt.compare(
-        password as string,
+        password,
         (await emailObject).password,
       );
-      if (isPasswordValid === false) {
+      if (!isPasswordValid) {
         throw new Error("email or password does not match");
       }
       if (emailObject === null) {
@@ -53,13 +66,13 @@ export default class Authentication {
   }
 
   /**
-  * Create a user with this method, check for pre-existing user email
-  */
-  static async register({ email, password }) {
+   * Create a user with this method, check for pre-existing user email
+   */
+  static async register({ email, password }: RegisterArgs) {
     try {
       const salt = bcrypt.genSaltSync(5);
       const passwordHash = bcrypt.hashSync(password, salt);
-      const emailObject = await this.findEmail(email);
+      const emailObject = await this.findEmail({ email });
       if (emailObject !== null) {
         // Put email and hashed password into db
         const newUser = {

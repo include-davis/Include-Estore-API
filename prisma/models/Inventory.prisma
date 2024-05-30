@@ -1,5 +1,5 @@
 model Inventory {
-  id                        String    @id @default(uuid())
+  id                        String    @id @default(cuid())
   available_quantity        Int
   cost_of_production        Int
   load_time                 Int

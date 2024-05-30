@@ -1,3 +1,3 @@
 model Tag {
-  name          String    @id @default(uuid())
+  name          String    @id @default(cuid())
 }

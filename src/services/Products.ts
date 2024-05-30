@@ -1,8 +1,22 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../prisma/client";
+
+// Define the structure of your input here, matching Prisma's ProductCreateInput
+type CreateProductInput = Prisma.ProductCreateInput;
+
+type UpdateProductInput = Prisma.ProductUpdateInput;
+
+type FindProductArgs = {
+  id: string;
+};
+
+type FindAllProductArgs = {
+  ids?: string[];
+};
 
 export default class Products {
   // CREATE
-  static async create({ input }) {
+  static async create({ input }: { input: CreateProductInput }) {
     const products = await prisma.product.create({
       data: input,
     });
@@ -10,11 +24,11 @@ export default class Products {
   }
 
   // READ
-  static async find({ id }) {
+  static async find({ id }: FindProductArgs) {
     return prisma.product.findUnique({ where: { id } });
   }
 
-  static async findAll({ ids }) {
+  static async findAll({ ids }: FindAllProductArgs) {
     if (!ids) {
       return prisma.product.findMany();
     }
@@ -28,22 +42,22 @@ export default class Products {
   }
 
   // UPDATE
-  static async update({ id, input }) {
+  static async update({ id, input }: { id: string; input: UpdateProductInput }) {
     try {
-      const user = await prisma.user.update({
+      const product = await prisma.product.update({
         where: {
-          Id: id,
+          id,
         },
         data: input,
       });
-      return user;
+      return product;
     } catch (e) {
       return null;
     }
   }
 
   // DELETE
-  static async delete({ id }) {
+  static async delete({ id }: FindProductArgs) {
     try {
       await prisma.product.delete({
         where: {

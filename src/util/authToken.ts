@@ -1,7 +1,3 @@
-/**
- * Express.js middleware for authentication token verification.
- * Retrieves token from cookies, verifies it, and sends authentication context.
- */
 import express from "express";
 import jwt from "jsonwebtoken";
 
@@ -90,7 +86,7 @@ export function verifyToken(token: Token): VerifyTokenResponse {
     return {
       ok: false,
       body: undefined,
-      error: e,
+      error: e as Error,
     };
   }
 }
@@ -120,8 +116,8 @@ authTokenRouter.use((req, res, next) => {
       auth: {
         ok: false,
         body: undefined,
-        error: e,
-      } as VerifyTokenResponse,
+        error: e as Error,
+      },
     };
     res.send(context); // Send error authentication context in case of exceptions
     next();

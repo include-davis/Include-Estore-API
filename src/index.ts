@@ -9,8 +9,8 @@ import { PrismaClient } from "@prisma/client";
 import prisma from "./prisma/client";
 
 // Type definitions
-import typeDefs from "./typeDefs/index";
-import resolvers from "./resolvers/index";
+import typeDefs from "./typeDefs";
+import resolvers from "./resolvers";
 
 // Define Prisma Client type
 type Context = {
@@ -46,9 +46,13 @@ async function startServer() {
   );
 
   // Start HTTP server
-  await httpServer.listen({ port: process.env.PORT || 4000 });
-  console.log(`🚀 Server ready at http://localhost:${process.env.PORT || 4000}/graphql 🚀`);
+  const port = process.env.PORT || 4000;
+  httpServer.listen(port, () => {
+    console.log(`🚀 Server ready at http://localhost:${port}/graphql 🚀`);
+  });
 }
 
 // Start the server
-startServer();
+startServer().catch((error) => {
+  console.error("Server failed to start", error);
+});

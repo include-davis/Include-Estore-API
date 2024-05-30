@@ -1,4 +1,5 @@
-import Authentication from "./Authentication.js";
-import Products from "./Products.js";
+import Authentication from "./Authentication";
+import Products from "./Products";
+import Order from "./Order";
 
-export default [Authentication, Products];
+export default [Authentication, Products, Order];

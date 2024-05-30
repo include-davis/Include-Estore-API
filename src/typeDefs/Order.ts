@@ -34,6 +34,7 @@ const typeDefs = gql`
   type Mutation {
     createOrder(input: CreateOrderInput!): Order
     updateOrderStatus(id: ID!, status: OrderStatus!): Order
+    deleteOrder(input: Int!): Order
   }
 
   input CreateOrderInput {

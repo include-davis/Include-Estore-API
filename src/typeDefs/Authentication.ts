@@ -7,8 +7,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    login(email: String!, password: String!): Boolean
-    register(email: String! password: String!): Boolean
+    Login(email: String!, password: String!): Boolean
+    Register(email: String! password: String!): Boolean
   }
 `;
 

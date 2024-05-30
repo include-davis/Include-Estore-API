@@ -59,9 +59,9 @@ export default class Orders {
   }
 
   // READ
-  static async find({ id } : {id : number}) {
+  static async find({ orderId } : {orderId : string}) {
     return prisma.order.findUnique({
-      where: { id },
+      where: { orderId },
     });
   }
 
@@ -72,9 +72,9 @@ export default class Orders {
 
   // UPDATE
   // Assuming you might want to update the status of an order
-  static async updateStatus({ id, status } : {id : number, status: OrderStatus}) {
+  static async updateStatus({ orderId, status } : {orderId : string, status: OrderStatus}) {
     const updatedOrder = await prisma.order.update({
-      where: { id },
+      where: { orderId },
       data: { status },
     });
     return updatedOrder;
@@ -82,9 +82,9 @@ export default class Orders {
 
   // DELETE
   // Assuming you might want to support order cancellation/deletion
-  static async delete({ id }) {
+  static async delete({ orderId } : { orderId: string }) {
     const deleteOrder = await prisma.order.delete({
-      where: { id },
+      where: { orderId },
     });
     return deleteOrder;
   }

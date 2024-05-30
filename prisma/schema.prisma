@@ -8,8 +8,7 @@ datasource db {
 }
 
 model Inventory {
-  id                Int     @id @default(autoincrement())
-  inventoryId       Int     @unique
+  inventoryId       String  @id @default(cuid())
   product           Product @relation(fields: [inventoryId], references: [id])
   availableQuantity Int
   costOfProduction  Int
@@ -26,7 +25,7 @@ enum OrderStatus {
 }
 
 model Order {
-  id                   Int         @id @default(autoincrement())
+  orderId              String         @id @default(cuid())
   customerName         String
   customerEmail        String
   customerPhoneNum     String
@@ -47,7 +46,7 @@ model Order {
 }
 
 model Product {
-  id                 Int              @id @default(autoincrement())
+  id                 String              @id @default(cuid())
   inventory          Inventory?
   name               String?
   price              Int
@@ -63,17 +62,17 @@ model Product {
 }
 
 model ProductToOrder {
-  productId Int
-  orderId   Int
+  productId String
+  orderId   String
   quantity  Int
   product   Product @relation(fields: [productId], references: [id])
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [orderId])
 
   @@id(name: "id", fields: [productId, orderId])
 }
 
 model ProductoToTag {
-  productId Int
+  productId String
   tagName   String
   product   Product @relation(fields: [productId], references: [id])
   tag       Tag     @relation(fields: [tagName], references: [name])
@@ -87,7 +86,7 @@ model Tag {
 }
 
 model User {
-  Id                   Int     @id @default(autoincrement())
+  Id                   String     @id @default(cuid())
   name                 String?
   email                String  @unique
   password             String
@@ -99,7 +98,7 @@ model User {
 }
 
 model Authentication {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   email     String   @unique
-  password  String
+  password  String   @unique
 }
