@@ -1,24 +1,26 @@
 import prisma from "../prisma/client";
+import { ProductInput } from "../types/Product";
 
 export default class Products {
   // CREATE
-  static async create({ input }) {
-    const products = await prisma.products.create({
+  static async create(input: ProductInput) {
+    const products = await prisma.product.create({
       data: input,
     });
     return products;
   }
 
   // READ
-  static async find({ id }) {
-    return prisma.products.findUnique({ where: { id } });
+  static async find(id: string) {
+    return prisma.product.findUnique({ where: { id } });
   }
 
-  static async findAll({ ids }) {
+  static async findAll(ids: [string]) {
     if (!ids) {
-      return prisma.products.findMany();
+      return prisma.product.findMany();
     }
-    return prisma.products.findMany({
+
+    return prisma.product.findMany({
       where: {
         id: {
           in: ids,
@@ -28,9 +30,9 @@ export default class Products {
   }
 
   // UPDATE
-  static async update({ id, input }) {
+  static async update(id: string, input: ProductInput) {
     try {
-      const user = await prisma.user.update({
+      const user = await prisma.product.update({
         where: {
           id,
         },
@@ -43,9 +45,9 @@ export default class Products {
   }
 
   // DELETE
-  static async delete({ id }) {
+  static async delete(id: string) {
     try {
-      await prisma.products.delete({
+      await prisma.product.delete({
         where: {
           id,
         },

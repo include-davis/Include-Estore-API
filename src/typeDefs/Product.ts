@@ -1,10 +1,10 @@
 import gql from "graphql-tag";
 
 const typeDefs = gql`
-    type Products {
+    type Product {
         id: ID!
         name: String!
-        price: Int!
+        price: Float!
         description: String!
         details: String!
         weight: Int!
@@ -14,9 +14,9 @@ const typeDefs = gql`
         special_label_needed: Boolean!
     }
 
-    input ProductsInput {
+    input ProductInput {
         name: String!
-        price: Int!
+        price: Float!
         description: String!
         details: String!
         weight: Int!
@@ -26,7 +26,7 @@ const typeDefs = gql`
         special_label_needed: Boolean!
     }
 
-    input ProductsInputOptional {
+    input ProductUpdateInput {
         name: String
         price: Int
         description: String
@@ -39,14 +39,14 @@ const typeDefs = gql`
     }
 
     type Query {
-        products(id: ID!): Products
-        manyProducts(id: [ID]): [Products]
+        product(id: ID!): Product
+        products(id: [ID]): [Product]
     }
 
     type Mutation {
-        createProducts(input: ProductsInput!): Products
-        updateProducts(id: ID!, input: ProductsInputOptional!): Products
-        deleteProducts(id: ID!): Boolean
+        createProduct(input: ProductInput!): Product
+        updateProduct(id: ID!, input: ProductUpdateInput!): Product
+        deleteProduct(id: ID!): Boolean
     }
 `;
 export default typeDefs;

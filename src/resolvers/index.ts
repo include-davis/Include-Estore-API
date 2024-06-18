@@ -1,4 +1,4 @@
 import Authentication from "./Authentication";
-import Products from "./Products";
+import Product from "./Product";
 
-export default [Authentication, Products];
+export default [Authentication, Product];

@@ -1,4 +1,4 @@
-model Products {
+model Product {
     id                   String  @id @default(uuid())
     name                 String
     price                Int
