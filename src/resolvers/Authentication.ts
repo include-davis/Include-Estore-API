@@ -6,13 +6,13 @@ const resolvers = {
       Authentications.generateHMACSignature(email),
     verifyHMACSignature: ({ data, signature }: { data: string, signature: string }) =>
       Authentications.verifyHMACSignature(data, signature),
-    Login: (
+    login: (
       _: any,
       { email, password }: { email: string, password: string },
       { res }: { res: any },
     ) =>
       Authentications.login({ email, password, res }),
-    Register: (
+    register: (
       _: any,
       { email, password }: { email: string, password: string },
       { res }: { res: any },
